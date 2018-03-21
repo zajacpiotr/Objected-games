@@ -1,0 +1,284 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+    int x=-6, y=-10, n=0, m=0;
+
+
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+
+
+
+void __fastcall TForm1::Timer_pilkaTimer(TObject *Sender)
+{
+         Label3-> Caption = m;
+         Label2-> Caption = n;
+         b-> Left+=x;
+
+         b-> Top+=y;
+// odbij od lewej sciany
+if(b->Left-5 <= tlo->Left) x= -x;
+// odbij od gornej sciany
+ //if(b->Top-5 <= tlo-> Top-660)  y= -y;
+// odbij od prawej sciany
+if (b->Left+b-> Width+5 > tlo -> Width) x= -x;
+
+
+if( b-> Top >= p1 -> Top + p1 -> Height +15)
+{
+  Timer_pilka -> Enabled = false;
+  b-> Visible = false;
+  Label1 ->Visible= true;
+  Button3->Visible= true;
+  Button4->Visible=true;
+  n++;
+  Label3-> Caption = m;
+  Label2-> Caption = n;
+
+
+} else if ((b ->Left >p1 ->Left-b->Width/2) && (b->Left < p1->Left+p1->Width) &&
+          (b ->Top+b ->Height > p1->Top) && (Prawo -> Enabled == true))
+          {
+               if((y>0) && (x<0))
+               {
+               y= -y; x=-x;
+               }
+               else if ((y>0) && (x>0))
+               {
+               y=-y;
+               }
+          }
+  else if ((b ->Left >p1 ->Left-b->Width/2) && (b->Left < p1->Left+p1->Width) &&
+          (b ->Top+b ->Height > p1->Top) && (Lewo -> Enabled == true))
+           {
+               if((y>0) && (x>0))
+               {
+               y= -y;  x=-x;
+               }
+               else if ((y>0) && (x<0))
+               {
+               y=-y;
+               }
+            }
+
+   else if ((b ->Left >p1 ->Left-b->Width/2) && (b->Left < p1->Left+p1->Width) &&
+          (b ->Top+b ->Height > p1->Top) && (Lewo -> Enabled == false) && (Prawo ->Enabled == false))
+           {
+               if(y>0) y= -y;
+          }
+
+
+
+
+ if(b->Top <= tlo-> Top)                     //( b-> Top >= p2-> Top + p2 -> Height -40 )
+{
+  Timer_pilka -> Enabled = false;
+  b-> Visible = false;
+  Label1 ->Visible= true;
+  Button3->Visible= true;
+  Button4->Visible=true;
+  m++;
+  Label3-> Caption = m;
+      Label2-> Caption = n;
+  }
+
+    else if ((b ->Left >p2 ->Left-b->Width/2) && (b->Left < p2->Left+p2->Width) &&
+          (b ->Top-b ->Height <= p2->Top) && (Prawo2 -> Enabled == true))
+          {
+               if(x<0)
+               {
+               y= -y; x=-x;
+               }
+               else if (x>0)
+               {
+               y=-y;
+               }
+           }
+  else if ((b ->Left >p2 ->Left-b->Width/2) && (b->Left < p2->Left+p2->Width) &&
+          (b ->Top-b ->Height <= p2->Top) && (Lewo2 -> Enabled == true))
+           {
+               if(x>0)
+               {
+               y= -y;  x=-x;
+               }
+               else if (x<0)
+               {
+               y=-y;
+               }
+            }
+  else if ((b ->Left >p2 ->Left-b->Width/2) && (b->Left < p2->Left+p2->Width) &&
+          (b ->Top-b ->Height <= p2->Top) && (Lewo -> Enabled == false) && (Prawo ->Enabled == false)  )
+          {
+                y= -y ;
+          }
+
+}
+//---------------------------------------------------------------------------
+
+
+
+
+void __fastcall TForm1::LewoTimer(TObject *Sender)
+{
+      if (p1 ->Left >10) p1-> Left -=10;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::PrawoTimer(TObject *Sender)
+{
+        if (p1 ->Left +p1->Width < tlo->Width-10) p1 -> Left += 10;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Lewo2Timer(TObject *Sender)
+{
+ if (p2 ->Left >10) p2-> Left -=10;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Prawo2Timer(TObject *Sender)
+{
+if (p2 ->Left +p2->Width < tlo->Width-10) p2 -> Left += 10;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::komputerTimer(TObject *Sender)
+{
+       p2 -> Left = b ->Left-50;
+       if (p2 ->Left >10) p2-> Left -=10;
+       if (p2 ->Left +p2->Width < tlo->Width-10) p2 -> Left += 10;
+
+
+
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
+void __fastcall TForm1::FormKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+     if (Key == VK_LEFT)  Lewo -> Enabled = true;
+     if (Key == VK_RIGHT) Prawo -> Enabled = true;
+     if (Key == 0x41)  Lewo2 -> Enabled = true;
+     if (Key == 0x44)  Prawo2 -> Enabled = true;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::FormKeyUp(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+   if (Key == VK_LEFT)  Lewo -> Enabled = false;
+   if (Key == VK_RIGHT) Prawo -> Enabled = false;
+   if (Key == 0x41)  Lewo2 -> Enabled = false;
+   if (Key == 0x44)  Prawo2 -> Enabled = false;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+        b->Left = 250;
+        b->Top = 550;
+
+        b->Visible = true;
+        x= -6; y= -10;
+        komputer -> Enabled = true;
+        Lewo2 -> Enabled = false;
+        Prawo2 -> Enabled = false;
+        Timer_pilka ->Enabled = true;
+
+        Button1->Visible = false;
+        Button2->Visible = false;
+        Menu->Visible=false;
+        Label2->Visible = true;
+        Label3->Visible = true;
+        Label4->Visible = false;
+        Button5->Visible = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+        b->Left = 250;
+        b->Top = 550;
+
+        b->Visible = true;
+        x= -6; y= -10;
+        komputer -> Enabled = false;
+        Lewo2 -> Enabled = false;
+        Prawo2 -> Enabled = false;
+        Timer_pilka ->Enabled = true;
+
+        Button1->Visible = false;
+        Button2->Visible = false;
+        Button3->Visible = false;
+        Button4->Visible = false;
+        Menu->Visible=false;
+        Label2->Visible = true;
+        Label3->Visible = true;
+        Label4->Visible = false;
+        Button5->Visible = false;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::Button3Click(TObject *Sender)
+{
+      b->Left = 250;
+      b->Top = 550;
+
+   b->Visible = true;
+   x= -6; y= -10;
+   Timer_pilka->Enabled = true;
+   Button3->Visible = false;
+   Button4->Visible = false;
+   Label1->Visible = false;
+   Menu->Visible=false;
+   Label4->Visible = false;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button4Click(TObject *Sender)
+{
+          Button1->Visible = true;
+          Button2->Visible =true;
+          Label1->Visible = false;
+          Button3->Visible = false;
+          Button4->Visible = false;
+          Menu->Visible=true;
+          m=0; n=0;
+          Label4->Visible = false;
+          Button5->Visible = true;
+
+}
+//---------------------------------------------------------------------------
+
+
+
+
+void __fastcall TForm1::Button5Click(TObject *Sender)
+{
+        Label4->Visible = true;
+}
+//---------------------------------------------------------------------------
+
